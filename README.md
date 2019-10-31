@@ -1,23 +1,18 @@
-# 🎁 typed-scss-modules
+# typed-less-modules
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat)](#contributors-)
-[![Build Status](https://travis-ci.com/skovy/typed-scss-modules.svg?branch=master)](https://travis-ci.com/skovy/typed-scss-modules)
-[![npm version](https://img.shields.io/npm/v/typed-scss-modules.svg?style=flat)](https://www.npmjs.com/package/typed-scss-modules)
+Generate TypeScript definitions (`.d.ts`) files for CSS Modules that are written in LESS (`.less`).
+Check out [this post to learn more](https://skovy.dev/generating-typescript-definitions-for-css-modules-using-less/) about the rationale and inspiration behind this package.
 
-Generate TypeScript definitions (`.d.ts`) files for CSS Modules that are written in SCSS (`.scss`). Check out [this post to learn more](https://skovy.dev/generating-typescript-definitions-for-css-modules-using-sass/) about the rationale and inspiration behind this package.
+For example, given the following LESS:
 
-![Example](/docs/typed-scss-modules-example.gif)
-
-For example, given the following SCSS:
-
-```scss
-@import "variables";
+```less
+@import (reference) "./variables.less";
 
 .text {
-  color: $blue;
+  color: @blue;
 
   &-highlighted {
-    color: $yellow;
+    color: @yellow;
   }
 }
 ```
@@ -34,34 +29,34 @@ export const textHighlighted: string;
 Run with npm package runner:
 
 ```bash
-npx tsm src
+npx tlm src
 ```
 
 Or, install globally:
 
 ```bash
-yarn global add typed-scss-modules
-tsm src
+yarn global add typed-less-modules
+tlm src
 ```
 
 Or, install and run as a `devDependency`:
 
 ```bash
-yarn add -D typed-scss-modules
-yarn tsm src
+yarn add -D typed-less-modules
+yarn tlm src
 ```
 
 ## Advanced Usage
 
-For all possible commands, run `tsm --help`.
+For all possible commands, run `tlm --help`.
 
-The only required argument is the directoy where all SCSS files are located. Running `tsm src` will search for all files matching `src/**/*.scss`. This can be overridden by providing a [glob](https://github.com/isaacs/node-glob#glob-primer) pattern instead of a directory. For example, `tsm src/*.scss`
+The only required argument is the directoy where all LESS files are located. Running `tlm src` will search for all files matching `src/**/*.less`. This can be overridden by providing a [glob](https://github.com/isaacs/node-glob#glob-primer) pattern instead of a directory. For example, `tlm src/*.less`
 
 ### `--watch` (`-w`)
 
 - **Type**: `boolean`
 - **Default**: `false`
-- **Example**: `tsm src --watch`
+- **Example**: `tlm src --watch`
 
 Watch for files that get added or are changed and generate the corresponding type definitions.
 
@@ -69,7 +64,7 @@ Watch for files that get added or are changed and generate the corresponding typ
 
 - **Type**: `boolean`
 - **Default**: `false`
-- **Example**: `tsm src --watch --ignoreInitial`
+- **Example**: `tlm src --watch --ignoreInitial`
 
 Skips the initial build when passing the watch flag. Use this when running concurrently with another watch, but the initial build should happen first. You would run without watch first, then start off the concurrent runs after.
 
@@ -77,7 +72,7 @@ Skips the initial build when passing the watch flag. Use this when running concu
 
 - **Type**: `string[]`
 - **Default**: `[]`
-- **Example**: `tsm src --includePaths src/core`
+- **Example**: `tlm src --includePaths src/core`
 
 An array of paths to look in to attempt to resolve your `@import` declarations. This example will search the `src/core` directory when resolving imports.
 
@@ -85,7 +80,7 @@ An array of paths to look in to attempt to resolve your `@import` declarations. 
 
 - **Type**: `object`
 - **Default**: `{}`
-- **Example**: `tsm src --aliases.~some-alias src/core/variables`
+- **Example**: `tlm src --aliases.~some-alias src/core/variables`
 
 An object of aliases to map to their corresponding paths. This example will replace any `@import '~alias'` with `@import 'src/core/variables'`.
 
@@ -93,16 +88,16 @@ An object of aliases to map to their corresponding paths. This example will repl
 
 - **Type**: `object`
 - **Default**: `{}`
-- **Example**: `tsm src --aliasPrefixes.~ node_modules/`
+- **Example**: `tlm src --aliasPrefixes.~ node_modules/`
 
 An object of prefix strings to replace with their corresponding paths. This example will replace any `@import '~bootstrap/lib/bootstrap'` with `@import 'node_modules/bootstrap/lib/bootstrap'`.
-This matches the common use-case for importing scss files from node_modules when `sass-loader` will be used with `webpack` to compile the project.
+This matches the common use-case for importing less files from node_modules when `less-loader` will be used with `webpack` to compile the project.
 
 ### `--nameFormat` (`-n`)
 
 - **Type**: `"camel" | "kebab" | "param" | "dashes" | "none"`
 - **Default**: `"camel"`
-- **Example**: `tsm src --nameFormat camel`
+- **Example**: `tlm src --nameFormat camel`
 
 The class naming format to use when converting the classes to type definitions.
 
@@ -116,7 +111,7 @@ The class naming format to use when converting the classes to type definitions.
 
 - **Type**: `boolean`
 - **Default**: `false`
-- **Example**: `tsm src --listDifferent`
+- **Example**: `tlm src --listDifferent`
 
 List any type definition files that are different than those that would be generated. If any are different, exit with a status code `1`.
 
@@ -124,15 +119,15 @@ List any type definition files that are different than those that would be gener
 
 - **Type**: `"named" | "default"`
 - **Default**: `"named"`
-- **Example**: `tsm src --exportType default`
+- **Example**: `tlm src --exportType default`
 
 The export type to use when generating type definitions.
 
 #### `named`
 
-Given the following SCSS:
+Given the following LESS:
 
-```scss
+```less
 .text {
   color: blue;
 
@@ -151,9 +146,9 @@ export const textHighlighted: string;
 
 #### `default`
 
-Given the following SCSS:
+Given the following LESS:
 
-```scss
+```less
 .text {
   color: blue;
 
@@ -186,28 +181,3 @@ For examples, see the `examples` directory:
 
 - [Basic Example](/examples/basic)
 - [Default Export Example](/examples/default-export)
-
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-<table>
-  <tr>
-    <td align="center"><a href="https://skovy.dev"><img src="https://avatars1.githubusercontent.com/u/5247455?v=4" width="100px;" alt="Spencer Miskoviak"/><br /><sub><b>Spencer Miskoviak</b></sub></a><br /><a href="https://github.com/skovy/typed-scss-modules/issues?q=author%3Askovy" title="Bug reports">🐛</a> <a href="#blog-skovy" title="Blogposts">📝</a> <a href="https://github.com/skovy/typed-scss-modules/commits?author=skovy" title="Code">💻</a> <a href="#example-skovy" title="Examples">💡</a> <a href="#ideas-skovy" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-skovy" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-skovy" title="Maintenance">🚧</a> <a href="#review-skovy" title="Reviewed Pull Requests">👀</a> <a href="#security-skovy" title="Security">🛡️</a> <a href="https://github.com/skovy/typed-scss-modules/commits?author=skovy" title="Tests">⚠️</a></td>
-    <td align="center"><a href="https://github.com/dawnmist"><img src="https://avatars3.githubusercontent.com/u/5810277?v=4" width="100px;" alt="Janeene Beeforth"/><br /><sub><b>Janeene Beeforth</b></sub></a><br /><a href="https://github.com/skovy/typed-scss-modules/issues?q=author%3Adawnmist" title="Bug reports">🐛</a> <a href="https://github.com/skovy/typed-scss-modules/commits?author=dawnmist" title="Code">💻</a> <a href="https://github.com/skovy/typed-scss-modules/commits?author=dawnmist" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/ericbf"><img src="https://avatars0.githubusercontent.com/u/2483476?v=4" width="100px;" alt="Eric Ferreira"/><br /><sub><b>Eric Ferreira</b></sub></a><br /><a href="https://github.com/skovy/typed-scss-modules/commits?author=ericbf" title="Code">💻</a> <a href="https://github.com/skovy/typed-scss-modules/commits?author=ericbf" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/lkarmelo"><img src="https://avatars2.githubusercontent.com/u/20393808?v=4" width="100px;" alt="Luis Lopes"/><br /><sub><b>Luis Lopes</b></sub></a><br /><a href="https://github.com/skovy/typed-scss-modules/commits?author=lkarmelo" title="Code">💻</a></td>
-  </tr>
-</table>
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
-## Alternatives
-
-This package was heavily influenced on [typed-css-modules](https://github.com/Quramy/typed-css-modules) which generates TypeScript definitions (`.d.ts`) files for CSS Modules that are written in CSS (`.css`).
-
-This package is currently used as a CLI. There are also [packages that generate types as a webpack loader](https://github.com/Jimdo/typings-for-css-modules-loader).
