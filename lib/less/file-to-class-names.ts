@@ -22,6 +22,7 @@ export interface Options {
   aliases?: Aliases;
   aliasPrefixes?: Aliases;
   nameFormat?: NameFormat;
+  verbose?: boolean;
 }
 
 export const NAME_FORMATS: NameFormat[] = [

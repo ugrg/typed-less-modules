@@ -25,14 +25,14 @@ export const writeFile = (
       );
 
       if (!typeDefinition) {
-        alerts.notice(`[NO GENERATED TYPES] ${file}`);
+        options.verbose && alerts.notice(`[NO GENERATED TYPES] ${file}`);
         return;
       }
 
       const path = getTypeDefinitionPath(file);
 
       fs.writeFileSync(path, typeDefinition);
-      alerts.success(`[GENERATED TYPES] ${path}`);
+      options.verbose && alerts.success(`[GENERATED TYPES] ${path}`);
     })
     .catch(({ message, filename, line, column }: Less.RenderError) => {
       const location = filename ? `(${filename}[${line}:${column}])` : "";
