@@ -3,6 +3,9 @@ import camelcase from "camelcase";
 import paramcase from "param-case";
 import fs from "fs";
 
+const NpmImportPlugin = require("less-plugin-npm-import");
+const CssModulesLessPlugin = require("less-plugin-css-modules").default;
+
 import { sourceToClassNames } from "./source-to-class-names";
 
 export type ClassName = string;
@@ -66,7 +69,11 @@ export const fileToClassNames = (
   }).then(fileContents => {
     return less
       .render(fileContents, {
-        filename: filepath
+        filename: filepath,
+        plugins: [
+          new NpmImportPlugin({ prefix: "~" }),
+          new CssModulesLessPlugin({ mode: "global" })
+        ]
       })
       .then((output: Less.RenderOutput) => {
         return sourceToClassNames(output.css).then(({ exportTokens }) => {
