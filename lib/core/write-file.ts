@@ -1,18 +1,16 @@
 import fs from "fs";
-import { SassError } from "node-sass";
-
 import { alerts } from "./alerts";
 import {
   getTypeDefinitionPath,
   classNamesToTypeDefinitions
 } from "../typescript";
-import { fileToClassNames } from "../sass";
+import { fileToClassNames } from "../less";
 import { MainOptions } from "./types";
 
 /**
  * Given a single file generate the proper types.
  *
- * @param file the SCSS file to generate types for
+ * @param file the LESS file to generate types for
  * @param options the CLI options
  */
 export const writeFile = (
@@ -36,8 +34,8 @@ export const writeFile = (
       fs.writeFileSync(path, typeDefinition);
       alerts.success(`[GENERATED TYPES] ${path}`);
     })
-    .catch(({ message, file, line, column }: SassError) => {
-      const location = file ? `(${file}[${line}:${column}])` : "";
+    .catch(({ message, filename, line, column }: Less.RenderError) => {
+      const location = filename ? `(${filename}[${line}:${column}])` : "";
       alerts.error(`${message} ${location}`);
     });
 };

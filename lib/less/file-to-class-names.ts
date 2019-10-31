@@ -1,6 +1,7 @@
-import sass from "node-sass";
+import less from "less";
 import camelcase from "camelcase";
 import paramcase from "param-case";
+import fs from "fs";
 
 import { sourceToClassNames } from "./source-to-class-names";
 
@@ -28,59 +29,53 @@ export const NAME_FORMATS: NameFormat[] = [
   "none"
 ];
 
-const importer = (aliases: Aliases, aliasPrefixes: Aliases) => (
-  url: string
-) => {
-  if (url in aliases) {
-    return {
-      file: aliases[url]
-    };
-  }
+// const importer = (aliases: Aliases, aliasPrefixes: Aliases) => (
+//   url: string
+// ) => {
+//   if (url in aliases) {
+//     return {
+//       file: aliases[url]
+//     };
+//   }
 
-  const prefixMatch = Object.keys(aliasPrefixes).find(prefix =>
-    url.startsWith(prefix)
-  );
-  if (prefixMatch) {
-    return {
-      file: aliasPrefixes[prefixMatch] + url.substr(prefixMatch.length)
-    };
-  }
+//   const prefixMatch = Object.keys(aliasPrefixes).find(prefix =>
+//     url.startsWith(prefix)
+//   );
+//   if (prefixMatch) {
+//     return {
+//       file: aliasPrefixes[prefixMatch] + url.substr(prefixMatch.length)
+//     };
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 export const fileToClassNames = (
-  file: string,
-  {
-    includePaths = [],
-    aliases = {},
-    aliasPrefixes = {},
-    nameFormat = "camel"
-  }: Options = {} as Options
+  filepath: string,
+  { nameFormat = "camel" }: Options = {} as Options
 ) => {
   const transformer = classNameTransformer(nameFormat);
-
-  return new Promise<ClassNames>((resolve, reject) => {
-    sass.render(
-      {
-        file,
-        includePaths,
-        importer: importer(aliases, aliasPrefixes)
-      },
-      (err, result) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        sourceToClassNames(result.css).then(({ exportTokens }) => {
+  return new Promise<string>((resolve, reject) => {
+    fs.readFile(filepath, "utf8", (err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(data);
+    });
+  }).then(fileContents => {
+    return less
+      .render(fileContents, {
+        filename: filepath
+      })
+      .then((output: Less.RenderOutput) => {
+        return sourceToClassNames(output.css).then(({ exportTokens }) => {
           const classNames = Object.keys(exportTokens);
           const transformedClassNames = classNames.map(transformer);
 
-          resolve(transformedClassNames);
+          return transformedClassNames;
         });
-      }
-    );
+      });
   });
 };
 

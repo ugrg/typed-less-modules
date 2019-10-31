@@ -11,7 +11,7 @@ describe("writeFile", () => {
   });
 
   test("writes the corresponding type definitions for a file and logs", async () => {
-    const testFile = `${__dirname}/../style.scss`;
+    const testFile = `${__dirname}/../style.less`;
     const typesFile = getTypeDefinitionPath(testFile);
 
     await writeFile(testFile, {
@@ -32,7 +32,7 @@ describe("writeFile", () => {
   });
 
   test("it skips files with no classes", async () => {
-    const testFile = `${__dirname}/../empty.scss`;
+    const testFile = `${__dirname}/../empty.less`;
 
     await writeFile(testFile, {
       watch: false,

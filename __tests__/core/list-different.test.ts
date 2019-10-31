@@ -13,7 +13,7 @@ describe("writeFile", () => {
   });
 
   test("logs invalid type definitions and exits with 1", async () => {
-    const pattern = `${__dirname}/../**/*.scss`;
+    const pattern = `${__dirname}/../**/*.less`;
 
     await listDifferent(pattern, {
       watch: false,
@@ -33,11 +33,11 @@ describe("writeFile", () => {
     expect(console.log).toBeCalledWith(
       expect.stringContaining(`[INVALID TYPES] Check type definitions for`)
     );
-    expect(console.log).toBeCalledWith(expect.stringContaining(`invalid.scss`));
+    expect(console.log).toBeCalledWith(expect.stringContaining(`invalid.less`));
   });
 
   test("logs nothing and does not exit if all files are valid", async () => {
-    const pattern = `${__dirname}/../**/style.scss`;
+    const pattern = `${__dirname}/../**/style.less`;
 
     await listDifferent(pattern, {
       watch: false,

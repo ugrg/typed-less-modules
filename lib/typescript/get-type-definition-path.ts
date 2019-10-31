@@ -1,7 +1,7 @@
 /**
- * Given a file path to a SCSS file, generate the corresponding type defintion
+ * Given a file path to a LESS file, generate the corresponding type defintion
  * file path.
  *
- * @param file the SCSS file path
+ * @param file the LESS file path
  */
 export const getTypeDefinitionPath = (file: string): string => `${file}.d.ts`;

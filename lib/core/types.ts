@@ -1,4 +1,4 @@
-import { Options } from "../sass";
+import { Options } from "../less";
 import { ExportType } from "../typescript";
 
 export interface MainOptions extends Options {

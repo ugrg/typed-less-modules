@@ -1,6 +1,6 @@
 import reserved from "reserved-words";
 
-import { ClassNames, ClassName } from "lib/sass/file-to-class-names";
+import { ClassNames, ClassName } from "lib/less/file-to-class-names";
 import { alerts } from "../core";
 
 export type ExportType = "named" | "default";

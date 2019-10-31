@@ -3,7 +3,7 @@ import fs from "fs";
 
 import { alerts } from "./alerts";
 import { MainOptions } from "./types";
-import { fileToClassNames } from "../sass";
+import { fileToClassNames } from "../less";
 import {
   classNamesToTypeDefinitions,
   getTypeDefinitionPath

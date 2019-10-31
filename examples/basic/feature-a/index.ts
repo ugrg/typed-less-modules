@@ -1,4 +1,4 @@
-import styles from "./style.scss";
+import styles from "./style.less";
 
 console.log(styles.text);
 console.log(styles.textHighlighted);

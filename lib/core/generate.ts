@@ -26,7 +26,7 @@ export const generate = async (
   // provide a (hopefully) helpful warning.
   if (files.length === 1) {
     alerts.warn(
-      `Only 1 file found for ${pattern}. If using a glob pattern (eg: dir/**/*.scss) make sure to wrap in quotes (eg: "dir/**/*.scss").`
+      `Only 1 file found for ${pattern}. If using a glob pattern (eg: dir/**/*.less) make sure to wrap in quotes (eg: "dir/**/*.less").`
     );
   }
 

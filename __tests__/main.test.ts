@@ -10,7 +10,7 @@ describe("main", () => {
     console.log = jest.fn(); // avoid console logs showing up
   });
 
-  test("generates types for all .scss files when the pattern is a directory", async () => {
+  test("generates types for all .less files when the pattern is a directory", async () => {
     const pattern = `${__dirname}`;
 
     await main(pattern, {
@@ -25,11 +25,11 @@ describe("main", () => {
     expect(fs.writeFileSync).toBeCalledTimes(5);
 
     expect(fs.writeFileSync).toBeCalledWith(
-      `${expectedDirname}/complex.scss.d.ts`,
+      `${expectedDirname}/complex.less.d.ts`,
       "export const someStyles: string;\nexport const nestedClass: string;\nexport const nestedAnother: string;\n"
     );
     expect(fs.writeFileSync).toBeCalledWith(
-      `${expectedDirname}/style.scss.d.ts`,
+      `${expectedDirname}/style.less.d.ts`,
       "export const someClass: string;\n"
     );
   });
