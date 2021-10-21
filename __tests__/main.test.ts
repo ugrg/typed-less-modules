@@ -26,7 +26,11 @@ describe("main", () => {
 
     expect(fs.writeFileSync).toBeCalledWith(
       `${expectedDirname}/complex.less.d.ts`,
-      "export const someStyles: string;\nexport const nestedClass: string;\nexport const nestedAnother: string;\n"
+      `export const someStyles: string;
+export const nestedClass: string;
+export const nestedAnother: string;
+export const nestedType: string;
+`
     );
     expect(fs.writeFileSync).toBeCalledWith(
       `${expectedDirname}/style.less.d.ts`,

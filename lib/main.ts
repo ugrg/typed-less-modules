@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import slash from "slash";
 
-import { watch, MainOptions, generate, listDifferent } from "./core";
+import { generate, listDifferent, MainOptions, watch } from "./core";
 
 export const main = async (pattern: string, options: MainOptions) => {
   // When the provided pattern is a directory construct the proper glob to find

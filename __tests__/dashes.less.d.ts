@@ -1,3 +1,11 @@
-export const app: string;
-export const logo: string;
-export const appHeader: string;
+export interface Styles {
+  app: string;
+  logo: string;
+  appHeader: string;
+}
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

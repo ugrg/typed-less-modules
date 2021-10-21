@@ -1,3 +1,12 @@
-export const someStyles: string;
-export const nestedClass: string;
-export const nestedAnother: string;
+export interface Styles {
+  someStyles: string;
+  nestedClass: string;
+  nestedAnother: string;
+  nestedType: string;
+}
+
+export type ClassNames = keyof Styles;
+
+declare const styles: Styles;
+
+export default styles;

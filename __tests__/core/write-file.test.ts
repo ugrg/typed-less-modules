@@ -6,6 +6,7 @@ import { getTypeDefinitionPath } from "../../lib/typescript";
 describe("writeFile", () => {
   beforeEach(() => {
     // Only mock the write, so the example files can still be read.
+    // @ts-ignore
     fs.writeFileSync = jest.fn();
     console.log = jest.fn();
   });
@@ -18,7 +19,8 @@ describe("writeFile", () => {
       watch: false,
       ignoreInitial: false,
       exportType: "named",
-      listDifferent: false
+      listDifferent: false,
+      verbose: true
     });
 
     expect(fs.writeFileSync).toBeCalledWith(
@@ -38,7 +40,8 @@ describe("writeFile", () => {
       watch: false,
       ignoreInitial: false,
       exportType: "named",
-      listDifferent: false
+      listDifferent: false,
+      verbose: true
     });
 
     expect(fs.writeFileSync).not.toBeCalled();

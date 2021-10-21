@@ -1,16 +1,23 @@
 import reserved from "reserved-words";
 
-import { ClassNames, ClassName } from "lib/less/file-to-class-names";
+import { ClassName, ClassNames } from "lib/less/file-to-class-names";
 import { alerts } from "../core";
 
 export type ExportType = "named" | "default";
+export type SplitType = ";" | "," | "";
 export const EXPORT_TYPES: ExportType[] = ["named", "default"];
+export const INTERFACE_SPLIT: SplitType[] = [";", ",", ""];
 
 const classNameToNamedTypeDefinition = (className: ClassName) =>
   `export const ${className}: string;`;
 
-const classNameToInterfaceKey = (className: ClassName) =>
-  `  '${className}': string;`;
+const classNameToInterfaceKey = (noQuotation: boolean) => (
+  className: ClassName
+) => {
+  return noQuotation && /^[a-zA-Z_]+$/.test(className)
+    ? `\n  ${className}: string`
+    : `\n  '${className}': string`;
+};
 
 const isReservedKeyword = (className: ClassName) =>
   reserved.check(className, "es5", true) ||
@@ -34,15 +41,19 @@ const isValidName = (className: ClassName) => {
 
 export const classNamesToTypeDefinitions = (
   classNames: ClassNames,
-  exportType: ExportType
+  exportType: ExportType,
+  noQuotation: boolean,
+  split: SplitType
 ): string | null => {
   if (classNames.length) {
     let typeDefinitions;
 
     switch (exportType) {
       case "default":
-        typeDefinitions = "export interface Styles {\n";
-        typeDefinitions += classNames.map(classNameToInterfaceKey).join("\n");
+        const toKey = classNameToInterfaceKey(noQuotation);
+        typeDefinitions = "export interface Styles {";
+        typeDefinitions += classNames.map(toKey).join(split);
+        if (split === ";") typeDefinitions += ";";
         typeDefinitions += "\n}\n\n";
         typeDefinitions += "export type ClassNames = keyof Styles;\n\n";
         typeDefinitions += "declare const styles: Styles;\n\n";

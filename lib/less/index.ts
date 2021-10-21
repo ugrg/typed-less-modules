@@ -1,5 +1,4 @@
 export {
-  Aliases,
   NameFormat,
   NAME_FORMATS,
   Options,

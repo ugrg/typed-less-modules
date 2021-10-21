@@ -1,26 +1,19 @@
-import less from "less";
 import camelcase from "camelcase";
-import paramcase from "param-case";
 import fs from "fs";
+import less from "less";
+import paramCase from "param-case";
+import { sourceToClassNames } from "./source-to-class-names";
 
 const NpmImportPlugin = require("less-plugin-npm-import");
 const CssModulesLessPlugin = require("less-plugin-css-modules").default;
 
-import { sourceToClassNames } from "./source-to-class-names";
-
 export type ClassName = string;
 export type ClassNames = ClassName[];
-
-export interface Aliases {
-  [index: string]: string;
-}
 
 export type NameFormat = "camel" | "kebab" | "param" | "dashes" | "none";
 
 export interface Options {
   includePaths?: string[];
-  aliases?: Aliases;
-  aliasPrefixes?: Aliases;
   nameFormat?: NameFormat;
   verbose?: boolean;
 }
@@ -32,27 +25,6 @@ export const NAME_FORMATS: NameFormat[] = [
   "dashes",
   "none"
 ];
-
-// const importer = (aliases: Aliases, aliasPrefixes: Aliases) => (
-//   url: string
-// ) => {
-//   if (url in aliases) {
-//     return {
-//       file: aliases[url]
-//     };
-//   }
-
-//   const prefixMatch = Object.keys(aliasPrefixes).find(prefix =>
-//     url.startsWith(prefix)
-//   );
-//   if (prefixMatch) {
-//     return {
-//       file: aliasPrefixes[prefixMatch] + url.substr(prefixMatch.length)
-//     };
-//   }
-
-//   return null;
-// };
 
 export const fileToClassNames = (
   filepath: string,
@@ -95,7 +67,7 @@ const classNameTransformer = (nameFormat: NameFormat): Transformer => {
   switch (nameFormat) {
     case "kebab":
     case "param":
-      return className => paramcase(className);
+      return className => paramCase(className);
     case "camel":
       return className => camelcase(className);
     case "dashes":

@@ -1,13 +1,10 @@
-import glob from "glob";
-import fs from "fs";
+import fs from 'fs';
+import glob from 'glob';
+import { fileToClassNames } from '../less';
+import { classNamesToTypeDefinitions, getTypeDefinitionPath } from '../typescript';
 
-import { alerts } from "./alerts";
-import { MainOptions } from "./types";
-import { fileToClassNames } from "../less";
-import {
-  classNamesToTypeDefinitions,
-  getTypeDefinitionPath
-} from "../typescript";
+import { alerts } from './alerts';
+import { MainOptions } from './types';
 
 export const listDifferent = async (
   pattern: string,
@@ -17,7 +14,7 @@ export const listDifferent = async (
   const files = glob.sync(pattern);
 
   if (!files || !files.length) {
-    alerts.notice("No files found.");
+    alerts.notice('No files found.');
     return;
   }
 
@@ -37,7 +34,9 @@ export const checkFile = (
     fileToClassNames(file, options).then(classNames => {
       const typeDefinition = classNamesToTypeDefinitions(
         classNames,
-        options.exportType
+        options.exportType,
+        options.interfaceNoQuotation,
+        options.interfaceSplit
       );
 
       if (!typeDefinition) {
@@ -48,7 +47,7 @@ export const checkFile = (
 
       const path = getTypeDefinitionPath(file);
 
-      const content = fs.readFileSync(path, { encoding: "UTF8" });
+      const content = fs.readFileSync(path, 'utf-8').replace(/\r\n/g, '\n');
 
       if (content === typeDefinition) {
         resolve(true);

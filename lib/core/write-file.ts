@@ -1,10 +1,10 @@
 import fs from "fs";
-import { alerts } from "./alerts";
-import {
-  getTypeDefinitionPath,
-  classNamesToTypeDefinitions
-} from "../typescript";
 import { fileToClassNames } from "../less";
+import {
+  classNamesToTypeDefinitions,
+  getTypeDefinitionPath
+} from "../typescript";
+import { alerts } from "./alerts";
 import { MainOptions } from "./types";
 
 /**
@@ -21,7 +21,9 @@ export const writeFile = (
     .then(classNames => {
       const typeDefinition = classNamesToTypeDefinitions(
         classNames,
-        options.exportType
+        options.exportType,
+        options.interfaceNoQuotation,
+        options.interfaceSplit
       );
 
       if (!typeDefinition) {

@@ -5,6 +5,7 @@ import { generate } from "../../lib/core";
 describe("generate", () => {
   beforeEach(() => {
     // Only mock the write, so the example files can still be read.
+    // @ts-ignore
     fs.writeFileSync = jest.fn();
     console.log = jest.fn(); // avoid console logs showing up
   });
@@ -16,7 +17,8 @@ describe("generate", () => {
       watch: false,
       ignoreInitial: false,
       exportType: "named",
-      listDifferent: false
+      listDifferent: false,
+      verbose: true
     });
 
     expect(fs.writeFileSync).toBeCalledTimes(5);

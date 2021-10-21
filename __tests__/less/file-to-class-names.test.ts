@@ -4,7 +4,12 @@ describe("fileToClassNames", () => {
   test("it converts a file path to an array of class names (default camel cased)", async () => {
     const result = await fileToClassNames(`${__dirname}/../complex.less`);
 
-    expect(result).toEqual(["someStyles", "nestedClass", "nestedAnother"]);
+    expect(result).toEqual([
+      "someStyles",
+      "nestedClass",
+      "nestedAnother",
+      "nestedType"
+    ]);
   });
 
   describe("nameFormat", () => {
@@ -13,7 +18,12 @@ describe("fileToClassNames", () => {
         nameFormat: "kebab"
       });
 
-      expect(result).toEqual(["some-styles", "nested-class", "nested-another"]);
+      expect(result).toEqual([
+        "some-styles",
+        "nested-class",
+        "nested-another",
+        "nested-type"
+      ]);
     });
 
     test("it converts a file path to an array of class names with param as the name format", async () => {
@@ -21,7 +31,12 @@ describe("fileToClassNames", () => {
         nameFormat: "param"
       });
 
-      expect(result).toEqual(["some-styles", "nested-class", "nested-another"]);
+      expect(result).toEqual([
+        "some-styles",
+        "nested-class",
+        "nested-another",
+        "nested-type"
+      ]);
     });
 
     test("it converts a file path to an array of class names where only classes with dashes in the names are altered", async () => {
